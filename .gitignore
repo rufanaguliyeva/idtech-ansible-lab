@@ -1,0 +1,21 @@
+# SSH private keys
+*.pem
+*.key
+id_rsa
+id_ed25519
+ansible_app01_ed25519
+
+# Secrets
+*.env
+*.token
+
+# Ansible temporary files
+*.retry
+.ansible/
+
+# macOS
+.DS_Store
+
+# Temporary files
+*.tmp
+*.log

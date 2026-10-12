@@ -1,0 +1,22 @@
+---
+- name: Configure all hosts with common role
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - common
+
+- name: Configure Ansible control node
+  hosts: control
+  become: true
+  gather_facts: true
+  roles:
+    - control_node
+
+- name: Configure backend and HAProxy on app node
+  hosts: app
+  become: true
+  gather_facts: true
+  roles:
+    - backend
+    - haproxy

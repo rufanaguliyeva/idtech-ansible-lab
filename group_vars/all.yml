@@ -1,0 +1,8 @@
+---
+common_packages:
+  - curl
+  - git
+  - vim
+  - python3
+
+idtech_group: idtechops

@@ -1,0 +1,18 @@
+---
+- name: Create control node project directory
+  ansible.builtin.file:
+    path: "{{ control_project_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create Ansible management marker
+  ansible.builtin.copy:
+    dest: "{{ control_project_dir }}/managed-by-ansible.txt"
+    content: |
+      IDTECH control node
+      This host is managed by Ansible.
+    owner: root
+    group: root
+    mode: "0644"

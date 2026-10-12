@@ -1,0 +1,21 @@
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    timeout connect 5s
+    timeout client 30s
+    timeout server 30s
+
+frontend idtech_frontend
+    bind *:{{ haproxy_frontend_port }}
+    default_backend idtech_backend
+
+backend idtech_backend
+    server app_backend {{ backend_bind_address }}:{{ backend_port }} check

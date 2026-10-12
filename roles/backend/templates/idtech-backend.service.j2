@@ -1,0 +1,15 @@
+[Unit]
+Description=IDTECH Backend Service
+After=network.target
+
+[Service]
+Type=simple
+User={{ backend_user }}
+Group={{ backend_group }}
+WorkingDirectory={{ backend_app_dir }}
+ExecStart=/usr/bin/python3 {{ backend_app_dir }}/backend.py
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

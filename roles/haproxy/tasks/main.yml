@@ -1,0 +1,46 @@
+---
+- name: Install HAProxy
+  ansible.builtin.package:
+    name: haproxy
+    state: present
+
+- name: Configure HAProxy safely
+  block:
+    - name: Render candidate HAProxy configuration
+      ansible.builtin.template:
+        src: haproxy.cfg.j2
+        dest: /tmp/haproxy.cfg.candidate
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Validate candidate HAProxy configuration
+      ansible.builtin.command:
+        cmd: /usr/sbin/haproxy -c -f /tmp/haproxy.cfg.candidate
+      changed_when: false
+
+    - name: Activate validated HAProxy configuration
+      ansible.builtin.copy:
+        src: /tmp/haproxy.cfg.candidate
+        dest: /etc/haproxy/haproxy.cfg
+        remote_src: true
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Reload HAProxy
+
+  rescue:
+    - name: Remove invalid candidate configuration
+      ansible.builtin.file:
+        path: /tmp/haproxy.cfg.candidate
+        state: absent
+
+    - name: Report rejected HAProxy configuration
+      ansible.builtin.fail:
+        msg: "HAProxy configuration validation failed. Existing working configuration was preserved."
+
+- name: Ensure HAProxy is enabled and started
+  ansible.builtin.service:
+    name: haproxy
+    enabled: true
+    state: started

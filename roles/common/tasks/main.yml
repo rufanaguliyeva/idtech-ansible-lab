@@ -1,0 +1,17 @@
+---
+- name: Ensure common IDTECH group exists
+  ansible.builtin.group:
+    name: "{{ idtech_group }}"
+    state: present
+
+- name: Refresh apt cache on Debian family
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when: ansible_facts['os_family'] == 'Debian'
+
+- name: Install common packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ common_packages }}"

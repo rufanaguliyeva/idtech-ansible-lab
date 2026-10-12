@@ -1,0 +1,7 @@
+---
+backend_port: 9000
+haproxy_frontend_port: 8080
+backend_bind_address: 127.0.0.1
+backend_user: idtech-backend
+backend_group: idtech-backend
+backend_app_dir: /opt/idtech-backend
